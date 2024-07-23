@@ -1,0 +1,93 @@
+.App {
+  width: 100%;
+  /* margin: 10rem auto; */
+  height: 570px;
+  margin-top: 50px;
+}
+
+.slide img {
+  width: 100%;
+  margin: 0 auto;
+}
+.slick-list {
+  padding: 40px 0 !important;
+}
+
+.slide {
+  transform: scale(0.7);
+  transition: transform 300ms;
+  opacity: 0.5;
+  border-radius: 10px;
+  box-shadow: 0px 0px 5px -1px #00000078;
+}
+
+.activeSlide {
+  transform: scale(1.1);
+  opacity: 1;
+}
+
+.arrow {
+  background-color: #fff;
+  position: absolute;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.arrow svg {
+  transition: color 300ms;
+}
+
+.arrow svg:hover {
+  color: #68edff;
+}
+
+.next {
+  right: 0%;
+  top: 50%;
+}
+
+.prev {
+  left: 0%;
+  top: 50%;
+}
+.cardImageContent {
+  padding: 10px;
+}
+.cardImageContent h1 {
+  font-size: 16px;
+  text-align: center;
+  font-weight: 700;
+  margin: 0;
+  margin-bottom: 12px;
+}
+.cardImageContent h5 {
+  font-size: 12px;
+  text-align: center;
+  font-weight: 400;
+  line-height: 1.5;
+  margin: 0;
+  margin-bottom: 10px;
+}
+.stars {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 0 70px;
+  margin-bottom: 10px;
+}
+@media only screen and (max-width: 600px) {
+  .activeSlide {
+    transform: scale(1);
+    opacity: 1;
+  }
+  .slide {
+    transform: scale(0.8);
+    opacity: 1 !important;
+    transition: transform 300ms;
+    opacity: 0.5;
+    border-radius: 10px;
+    box-shadow: 0px 0px 5px -1px #00000078;
+  }
+  .App {
+    margin-top: 0;
+  }
+}
