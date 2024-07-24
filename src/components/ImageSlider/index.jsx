@@ -25,7 +25,7 @@ const images = [
       "We get the benefit of aadhar enabled payment system and AEPS cash withdrawal to fulfill the demands of our customers along with the best AEPS services to make us grow.",
   },
   {
-    url: "https://res.cloudinary.com/dqcr5yn0b/image/upload/v1721727472/2_qeank8.png",
+    url: "https://res.cloudinary.com/dqcr5yn0b/image/upload/v1721799359/features_uw5xet_c_crop_ar_3_4_iclm2g.jpg",
     name: "Sunil Kashyap",
     content:
       "We were looking for AEPS registration online free to get Aadhar-based money withdrawal services when we learned about the best Aeps services from Maya Web Tech.",

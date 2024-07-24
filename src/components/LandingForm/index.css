@@ -30,11 +30,12 @@ html {
   height: 800px;
   right: -20px;
   top: -115px;
+  width: 80%;
 }
 .right .movingRight {
   height: 600px;
   width: 35vw;
-  margin-right: 12vw;
+  margin-right: 15vw;
   animation: right 4s infinite ease-in-out;
 }
 .mobileTopImage {
@@ -128,7 +129,8 @@ html {
 .ratings {
   margin-top: 60px;
   display: flex;
-  gap: 40px;
+  gap: 80px;
+  margin-left: 30px;
 }
 .mainCard {
   justify-content: center;
@@ -263,6 +265,7 @@ li {
 }
 .fifthImageBullets {
   margin: 0 10px;
+  height: 175px;
 }
 .fifthImageBullets ul li {
   font-size: 10px;
@@ -425,12 +428,11 @@ li {
 .bottomRight button {
   padding: 10px 50px;
   font-size: 20px;
-  background-color: white;
   border: 0px;
   color: white;
   border-radius: 5px;
-  background-color: #9b0d2e;
-  box-shadow: 0px 0px 12px 1px #0000007d;
+  background-color: rgb(247, 77, 3);
+  box-shadow: 0px 0px 12px 1px #c500007d;
   font-weight: 600;
   cursor: pointer;
 }
@@ -441,8 +443,9 @@ li {
   right: -150px;
 }
 .tenthBottom {
-  margin-top: 30px;
+  margin-top: 0px;
   margin-bottom: 20px;
+  padding: 0 5px;
   font-size: 14.1px;
 }
 .fifthImageConatiner {
@@ -492,8 +495,6 @@ li {
 .modalRight {
   height: 100%;
   width: 100%;
-  /* max-height: 600px;
-  max-width: 600px; */
   overflow: hidden; /* Hide any overflow */
   position: relative; /* Position relative for image positioning */
 }
@@ -503,6 +504,7 @@ li {
   top: 0;
   left: 0;
   height: 130%;
+  width: 160%;
   max-width: none; /* Allow the image to be larger than its container */
   transform: translateY(-25%); /* Move the image to the left to show only 45% */
   z-index: -1;
@@ -514,6 +516,28 @@ li {
 .modalHeading h3 {
   font-size: 22px;
   font-weight: 700;
+}
+.closeIcon {
+  z-index: 9;
+}
+.closeIcon:hover {
+  background-color: white !important;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.427);
+}
+.joinBtnFix {
+  position: fixed;
+  right: 20px;
+  z-index: 999;
+  background-color: white;
+  color: #9b0d2e;
+  border-radius: 0;
+  border: 0;
+  box-shadow: 0 0 5px 3px #9b0d2e4a;
+}
+.gstNum {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
 }
 
 /* ********************************* Meida query started ************************************/

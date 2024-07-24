@@ -1,12 +1,21 @@
 import React, { useState } from "react";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "../../../Firebase";
-import "./index.css";
 import Modal from "@mui/material/Modal";
-import { Box, TextField, Button, Grid, IconButton } from "@mui/material";
+import {
+  Box,
+  TextField,
+  Button,
+  Grid,
+  IconButton,
+  MenuItem,
+  CircularProgress,
+} from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { Bounce, ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Navbar from "../Navbar/Navbar";
 import Hero from "../Hero/Hero";
 import Aeps from "../Aeps/Aeps";
@@ -18,18 +27,22 @@ import WhyChooseUs from "../WhyChooseUs/WhyChooseUs";
 import OurSoftwares from "../OurSoftwares/OurSoftwares";
 import FAQ from "../FAQ/FAQ";
 import Footer from "../Footer/Footer";
-import { phoneRegExp } from "../../constants/constant";
+import { emailRegex } from "../../constants/constant";
 
 const validationSchema = Yup.object({
   name: Yup.string().required("Name is required"),
-  phoneNumber: Yup.string().matches(phoneRegExp, "Phone number is not valid"),
+  phoneNumber: Yup.string()
+    .matches(/^[0-9]{10}$/, "Phone number must be exactly 10 digits")
+    .required("Phone number is required"),
   email: Yup.string()
-    .email("Invalid email address")
+    .matches(emailRegex, "Enter a valid email")
     .required("Email is required"),
+  category: Yup.string().required("Category is required"),
 });
 
 const LandingForm = () => {
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     formik.resetForm();
@@ -70,16 +83,44 @@ const LandingForm = () => {
       name: "",
       phoneNumber: "",
       email: "",
+      category: "",
     },
     validationSchema,
     onSubmit: async (values) => {
+      setLoading(true);
       try {
         await addDoc(collection(db, "form"), {
           formData: values,
         });
+        toast.success(
+          "Thank you for reaching out. We have received your message and will get in touch with you shortly.",
+          {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            transition: Bounce,
+          }
+        );
         handleClose();
-        
+        setLoading(false);
       } catch (e) {
+        toast.error("Error submitting the form. Please try again.", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          transition: Bounce,
+        });
+        setLoading(false);
         console.error("Error adding document: ", e);
       }
     },
@@ -87,6 +128,9 @@ const LandingForm = () => {
 
   return (
     <div>
+      {/* <button className="joinBtn joinBtnFix" onClick={handleOpen}>
+        Book Demo
+      </button> */}
       <Navbar />
       <Hero handleOpen={handleOpen} />
       <Aeps handleOpen={handleOpen} />
@@ -99,6 +143,7 @@ const LandingForm = () => {
       <FAQ />
       <Footer handleOpen={handleOpen} />
       <div>
+        <ToastContainer />
         <Modal open={open} onClose={handleClose}>
           <Box
             sx={{
@@ -107,6 +152,7 @@ const LandingForm = () => {
               maxWidth: "800px",
               position: "relative",
               padding: 4,
+              borderRadius: 2,
             }}
           >
             <IconButton
@@ -119,8 +165,9 @@ const LandingForm = () => {
                 backgroundColor: "white",
                 boxShadow: "0 0 10px 0 #bbb",
               }}
+              className="closeIcon"
             >
-              <CloseIcon />
+              <CloseIcon className="closeCross" />
             </IconButton>
 
             <Grid container spacing={2}>
@@ -140,26 +187,84 @@ const LandingForm = () => {
                     </div>
                   </div>
                   <form className="modalForm" onSubmit={formik.handleSubmit}>
+                    {/* Category dropdown field */}
+                    <TextField
+                      fullWidth
+                      select
+                      label="Category"
+                      margin="normal"
+                      variant="outlined"
+                      name="category"
+                      value={formik.values.category}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      error={
+                        formik.touched.category &&
+                        Boolean(formik.errors.category)
+                      }
+                      helperText={
+                        formik.touched.category && formik.errors.category
+                      }
+                      sx={inputStyle}
+                      size="small"
+                    >
+                      <MenuItem value="Payin Payout Dashboard" size="small">
+                        Payin Payout Dashboard
+                      </MenuItem>
+                      <MenuItem value="Reseller B2B Admin Portal">
+                        Reseller B2B Admin Portal
+                      </MenuItem>
+                      <MenuItem value="B2B Admin Portal">
+                        B2B Admin Portal
+                      </MenuItem>
+                      <MenuItem value="White Label Portal">
+                        White Label Portal
+                      </MenuItem>
+                      <MenuItem value="Multi Recharge Portal">
+                        Multi Recharge Portal
+                      </MenuItem>
+                      <MenuItem value="Recharge & BBPS API">
+                        Recharge & BBPS API
+                      </MenuItem>
+                      <MenuItem value="Domestic Money Transfer API">
+                        Domestic Money Transfer API
+                      </MenuItem>
+                      <MenuItem value="AEPS API">AEPS API</MenuItem>
+                      <MenuItem value="Payout API">Payout API</MenuItem>
+                      <MenuItem value="Software with source code">
+                        Software with source code
+                      </MenuItem>
+                      <MenuItem value="AEPS Admin Portal">
+                        AEPS Admin Portal
+                      </MenuItem>
+                    </TextField>
+
+                    {/* Name field */}
                     <TextField
                       fullWidth
                       label="Name"
                       margin="normal"
                       variant="outlined"
                       name="name"
-                      value={formik.values.name || ""}
+                      value={formik.values.name}
                       onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
                       error={formik.touched.name && Boolean(formik.errors.name)}
                       helperText={formik.touched.name && formik.errors.name}
                       sx={inputStyle}
+                      size="small"
                     />
+
+                    {/* Phone Number field */}
                     <TextField
                       fullWidth
                       label="Phone Number"
                       margin="normal"
                       variant="outlined"
                       name="phoneNumber"
-                      value={formik.values.phoneNumber || ""}
+                      value={formik.values.phoneNumber}
                       onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
                       error={
                         formik.touched.phoneNumber &&
                         Boolean(formik.errors.phoneNumber)
@@ -168,7 +273,11 @@ const LandingForm = () => {
                         formik.touched.phoneNumber && formik.errors.phoneNumber
                       }
                       sx={inputStyle}
+                      inputProps={{ maxLength: 10 }} // Restrict input to 10 digits
+                      size="small"
                     />
+
+                    {/* Email field */}
                     <TextField
                       fullWidth
                       label="Email"
@@ -176,14 +285,18 @@ const LandingForm = () => {
                       margin="normal"
                       variant="outlined"
                       name="email"
-                      value={formik.values.email || ""}
+                      value={formik.values.email}
                       onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
                       error={
                         formik.touched.email && Boolean(formik.errors.email)
                       }
                       helperText={formik.touched.email && formik.errors.email}
                       sx={inputStyle}
+                      size="small"
                     />
+
+                    {/* Submit button */}
                     <Button
                       fullWidth
                       variant="contained"
@@ -191,7 +304,14 @@ const LandingForm = () => {
                       className="modalSubmitButton"
                       type="submit"
                     >
-                      Get Started
+                      {loading ? (
+                        <CircularProgress
+                          style={{ color: "white" }}
+                          size={24}
+                        />
+                      ) : (
+                        "Get Started"
+                      )}
                     </Button>
                   </form>
                 </div>
