@@ -28,6 +28,7 @@ import OurSoftwares from "../OurSoftwares/OurSoftwares";
 import FAQ from "../FAQ/FAQ";
 import Footer from "../Footer/Footer";
 import { emailRegex } from "../../constants/constant";
+import { useNavigate } from "react-router-dom";
 
 const validationSchema = Yup.object({
   name: Yup.string().required("Name is required"),
@@ -41,6 +42,7 @@ const validationSchema = Yup.object({
 });
 
 const LandingForm = () => {
+  const navigate = useNavigate()
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -108,6 +110,7 @@ const LandingForm = () => {
         );
         handleClose();
         setLoading(false);
+        navigate('/thank-you')
       } catch (e) {
         toast.error("Error submitting the form. Please try again.", {
           position: "top-center",
